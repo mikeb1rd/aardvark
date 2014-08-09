@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Aardvark Example</title>
+		<script type="text/javascript" language="javascript" id="aardvark" src="../aardvark.js"></script>
+		<script type="text/javascript" language="javascript">
+		<!--
+			// Include the Aardvark class above.
+
+			// Create an object from the Aardvark class. Make sure the objects name
+			// is passed into the class so that variables can be assigned to the
+			// right object
+			var Connection = new Aardvark('Connection');
+
+			// Function that starts the asnchronous variable transfer
+			function request() {
+
+				document.getElementById('response').innerHTML = 'Getting MD5 hash';
+
+				// Define the variables you wish to send
+				var query = document.getElementById('query').value;
+
+				// Send the variables across to the server. When a response is received,
+				// fire the window.passback() function. 'variables' is an array of the
+				// variables received.
+				Connection.add('query', query);
+				Connection.send('md5.process.php', 'passback(variables)');
+
+			}
+
+			// Function that is fired when new data is received
+			function passback(variables) {
+				document.getElementById('response').innerHTML = Connection.vars['md5'];
+			}
+
+		//-->
+		</script>
+	</head>
+	<body>
+		<p>
+			This example grabs the input into the text box below, puts it into a<br />
+			variable named 'query', then sends that variable off using Aardvark<br />
+			to the server. The server then md5's the query and sends it back to<br />
+			the client as a variable called 'md5'<br />
+		</p>
+		<p><input type="text" name="query" id="query" /> <a href="javascript:request();">MD5 it!</a></p>
+		<div id="response"></div>
+	</body>
+</html>

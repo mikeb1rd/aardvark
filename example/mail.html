@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<script type="text/javascript" language="javascript" id="aardvark" src="../aardvark.js"></script>
+		<script type="text/javascript" language="javascript">
+		<!--
+			// Include the Aardvark class above.
+
+			// Create an object from the Aardvark class. Make sure the objects name
+			// is passed into the class so that variables can be assigned to the
+			// right object
+			var Connection = new Aardvark('Connection');
+
+			// Function that starts the asnchronous variable transfer
+			function email() {
+
+				//Disable form elements
+				document.getElementById('email_name').disabled = true;
+				document.getElementById('email_company').disabled = true;
+				document.getElementById('email_from').disabled = true;
+				document.getElementById('email_telephone').disabled = true;
+				document.getElementById('email_mobile').disabled = true;
+				document.getElementById('email_address').disabled = true;
+				document.getElementById('email_message').disabled = true;
+				document.getElementById('email_send').disabled = true;
+				document.getElementById('email_status').disabled = true;
+				document.getElementById('email_status').innerHTML = 'Sending..';
+
+				// Define the variables you wish to send
+				var from = document.getElementById('email_from').value;
+				var fromname = document.getElementById('email_name').value;
+				var company = document.getElementById('email_company').value;
+				var telephone = document.getElementById('email_telephone').value;
+				var mobile = document.getElementById('email_mobile').value;
+				var address = document.getElementById('email_address').value;
+				var message = document.getElementById('email_message').value;
+
+				// Send the variables across to the server. When a response is received,
+				// fire the window.passback() function. 'variables' is an array of the
+				// variables received.
+				Connection.add('from', from);
+				Connection.add('fromname', fromname);
+				Connection.add('company', company);
+				Connection.add('telephone', telephone);
+				Connection.add('mobile', mobile);
+				Connection.add('address', address);
+				Connection.add('message', message);
+				Connection.send('mail.process.php', 'passback(variables)');
+
+			}
+
+			// Function that is fired when new data is received
+			function passback(variables) {
+			console.log(Connection.vars);
+				//Enable form elements
+				document.getElementById('email_name').disabled = false;
+				document.getElementById('email_company').disabled = false;
+				document.getElementById('email_from').disabled = false;
+				document.getElementById('email_telephone').disabled = false;
+				document.getElementById('email_mobile').disabled = false;
+				document.getElementById('email_address').disabled = false;
+				document.getElementById('email_message').disabled = false;
+				document.getElementById('email_send').disabled = false;
+				document.getElementById('email_status').disabled = false;
+				document.getElementById('email_status').innerHTML = Connection.vars['result'];
+
+			}
+
+		//-->
+		</script>
+	</head>
+	<body>
+		<table border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td>Your Name:</td>
+				<td><input type="text" name="email_name" id="email_name" /></td>
+			</tr>
+			<tr>
+				<td>Company Name:</td>
+				<td><input type="text" name="email_company" id="email_company" /></td>
+			</tr>
+			<tr>
+				<td>E-mail Address:</td>
+				<td><input type="text" name="email_from" id="email_from" /></td>
+			</tr>
+			<tr>
+				<td>Telephone Number:</td>
+				<td><input type="text" name="email_telephone" id="email_telephone" /></td>
+			</tr>
+			<tr>
+				<td>Mobile Number:</td>
+				<td><input type="text" name="email_mobile" id="email_mobile" /></td>
+			</tr>
+			<tr>
+				<td>Address:</td>
+				<td><textarea name="email_address" id="email_address"></textarea></td>
+			</tr>
+			<tr>
+				<td>Message:</td>
+				<td><textarea name="email_message" id="email_message"></textarea></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><a href="javascript:email();" id="email_send">Send E-mail (could be an image here instead etc.)</a></td>
+			</tr>
+		</table>
+		<br /><br />
+		<div id="email_status">Fill in the above form and click send when complete!</div>
+	</body>
+</html>
